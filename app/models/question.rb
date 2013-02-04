@@ -1,12 +1,12 @@
 class Question < ActiveRecord::Base
   attr_accessible :a, :answer, :b, :c, :d, :difficulty
-
+  has_many :solutions
 end
 
 
 def generatequestions
- number_array = ["1.0","2.0","3.0","4.0","5.0","6.0","7.0","8.0","9.0"]
-# number_array = ["1.0", "4.0","5.0","6.0"]
+# number_array = ["1.0","2.0","3.0","4.0","5.0","6.0","7.0","8.0","9.0"]
+ number_array = ["1.0", "4.0","5.0","6.0"]
   
   operators = [" + ", " - ", " * ", " / "]
   openparens = [" ", "(", "(("]
@@ -80,39 +80,31 @@ def generatequestions
                                                   
                           else
                             answer = openparen1 + a.first + operator1 + openparen2 + b.first + closeparen2 + operator2 + openparen3 + c.first + closeparen3 + operator3 + d.first + closeparen4                            
-                            #puts block4 + " --- " + answer
-                            
                             if eval(block4) == 24 
-                              #if eval(answer) == 24  
-                                nums = [a, b, c, d].sort
-                                searchstring = "a="+ nums[0] + " and b="+ nums[1] + " and c=" + nums[2] + " and d=" + nums[3]
+                            nums = [a, b, c, d].sort
+                            searchstring = "a="+ nums[0] + " and b="+ nums[1] + " and c=" + nums[2] + " and d=" + nums[3]
                             
-                                oldq = Question.where(searchstring)
-                                #answer = openparen1 + a.first + operator1 + openparen2 + b.first + closeparen2 + operator2 + openparen3 + c.first + closeparen3 + operator3 + d.first + closeparen4                            
-                              
-                                if oldq.length == 0
-                                  newq = Question.new 
-                                  newq.answer = "--- " + answer + " <"+block4+"> "
-                                  newq.difficulty = 1
-                                  answer = answer  + " ********** "
-                              
-                                else 
-                                  newq = oldq.first
-                                  newq.answer = newq.answer + " ***** " + answer+ " <"+block4+"> "
-                                  newq.difficulty = newq.difficulty + 1                    
-                                end
-                                newq.a = eval(nums[0])
-                                newq.b = eval(nums[1])
-                                newq.c = eval(nums[2])
-                                newq.d = eval(nums[3])
-                                puts answer
-                                newq.save
-                              #end
-                                
+                            oldq = Question.where(searchstring)
+                          
+                            if oldq.length == 0
+                              newq = Question.new 
+                              newq.a = eval(nums[0])
+                              newq.b = eval(nums[1])
+                              newq.c = eval(nums[2])
+                              newq.d = eval(nums[3])
+                              puts answer 
+                              newq.save
+                              parent_q = newq.id
+                            else 
+                              parent_q = oldq.first.id
+                            end
+                            new_solution = Solution.new
+                            new_solution.question_id = parent_q
+                            new_solution.answer = answer
+                            new_solution.save                              
                             end
                           end
                         end
-                         
                       end
                     end
                   end

@@ -1,33 +1,37 @@
+  
+<div class="card-image">
 
-<head>
-<style type="text/css">
-body {background-image:'file://localhost/Users/Addison/Desktop/RubySTUFF/TwentyFour/app/assets/images/TwentyFourCard.png';}
-</style>
-</head>
+	
+   <div class="top-number">
+    <%= @question.a %>
+  </div>
 
-<p>
-  <b>A:</b>
-  <%= @question.a %>
-</p>
+   <div class="left-number">
+    <%= @question.b %>
+  </div>
 
-<p>
-  <b>B:</b>
-  <%= @question.b %>
-</p>
+   <div class="right-number">
+    <%= @question.c %>
+  </div>
 
-<p>
-  <b>C:</b>
-  <%= @question.c %>
-</p>
-
-<p>
-  <b>D:</b>
-  <%= @question.d %>
-</p>
-
-<p>
-
+   <div class="bottom-number">
+    <%= @question.d %>
+  </div>
+</div>
+<%= link_to 'Next', Question.all.sample %>
 <%= link_to 'Back', questions_path %>
-</body>
+<br>
+
+<div id="solutions">
+	<% @question.solutions.each do |x| %>
+	<p>
+	<%= x.answer %>
+	</p>
+    <% end %>
+   		
+</div>
+
+
+
 
 

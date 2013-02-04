@@ -1,4 +1,6 @@
 TwentyFour::Application.routes.draw do
+  resources :solutions
+
   resources :questions
 
   # The priority is based upon order of creation:
